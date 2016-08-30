@@ -28,4 +28,25 @@ public class CountryController {
     public void setLst(List<Countries> lst) {
         this.lst = lst;
     }
+    
+    private Countries country = new Countries();
+
+    public Countries getCountry() {
+        return country;
+    }
+
+    public void setCountry(Countries country) {
+        this.country = country;
+    }
+    
+    public void remove(Countries co){
+        CountryiesDao dao = new CountryiesDao();
+        dao.delete(co);
+    }
+    
+    public String insert(){
+        CountryiesDao dao = new CountryiesDao();
+        dao.save(country);
+        return "index";
+    }
 }

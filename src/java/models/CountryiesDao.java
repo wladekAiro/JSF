@@ -9,41 +9,62 @@ package models;
  *
  * @author wladek
  */
-
 import entities.*;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-public class CountryiesDao {
+import org.hibernate.Session;
+
+public class CountryiesDao extends BaseDao {
     
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("wladek"); 
+    Session session = NewHibernateUtil.getSessionFactory().getCurrentSession();
 
-    public EntityManager getEntityManager(){
+    public CountryiesDao() {
+    }
 
-        return emf.createEntityManager();
+    public Countries create(Countries co) {
 
+        save(co);
+
+        return co;
+    }
+
+    public void delete(Countries co) {
+        try{
+            session.beginTransaction();
+            session.delete(co);
+            session.getTransaction().commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+    }
+
+    public Countries updtate(Countries co) {
+
+       try{
+            session.beginTransaction();
+            session.update(co);
+            session.getTransaction().commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+
+        return co;
+    }
+
+    public List<Countries> getAll() {
+        return getResultList(getEntityManager().createQuery("FROM Countries c"), 0, 10);
     }
     
-    public CountryiesDao(){
-        
-    }
     
-    public List<Countries> getAll(){
-        return getResultList(getEntityManager().createQuery("FROM Countries c") , 0 , 10);
+    public void save(Countries co){
+        try{
+            session.beginTransaction();
+            session.save(co);
+            session.getTransaction().commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
     }
-    
-    public <T> List<T> getResultList(Query query,Integer offSet, Integer limit){
-		List<T> values = null;
-		
-		if(limit==null || offSet==null){
-			values = query.getResultList();
-		}else{
-			values = query.setFirstResult(offSet).setMaxResults(limit).getResultList();
-		}
-		
-		return values;
-	}
 }

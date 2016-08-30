@@ -8,25 +8,32 @@
     </h:head>
     <h:body>
         Hello from Facelets
-        
-        <h:dataTable value="#{coutrycontroller.lst}" var="country">
-            <h:column>
-                <f:facet name="header">Id</f:facet>
-                #{country.id}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Country Name</f:facet>
-                #{country.name}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Capital City</f:facet>
-                #{country.capitalCity}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Population</f:facet>
-                #{country.poopulation}
-            </h:column>
-        </h:dataTable>
+        <h:link outcome="cretae" value="New"></h:link>
+        <h:form>
+            <h:dataTable value="#{coutrycontroller.lst}" var="country">
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                        #{country.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Country Name</f:facet>
+                        #{country.name}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Capital City</f:facet>
+                        #{country.capitalCity}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Population</f:facet>
+                        #{country.poopulation}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandLink value="Delete" action="#{coutrycontroller.remove(country)}" 
+                                   onclick="return confirm('Are you sure?')"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
     </h:body>
 </html>
 
